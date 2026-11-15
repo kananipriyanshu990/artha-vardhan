@@ -21,7 +21,7 @@ const ZONES = [
   { id: "portfolio", label: "Portfolio", icon: PieChart, accent: "#00D4FF" },
   { id: "compounding", label: "Compounding", icon: TrendingUp, accent: "#F5C518" },
   { id: "roadmap", label: "Roadmap", icon: Compass, accent: "#7C3AED" },
-  { id: "ai", label: "AI Advisor", icon: Bot, accent: "#00D4FF" },
+  { id: "ai", label: "Advisor", icon: Bot, accent: "#00D4FF" },
 ];
 
 export default function Navbar() {
