@@ -52,9 +52,6 @@ export default function Navbar() {
           <span className="font-heading font-extrabold text-2xl tracking-tight text-[#F5C518]">
             Artha Vardhan
           </span>
-          <span className="hidden md:inline-block text-xs uppercase tracking-widest text-[#9CA3AF] px-2 py-0.5 rounded border border-[#1E2A3A]">
-            Arthaton &apos;26
-          </span>
         </button>
 
         {/* Desktop Links */}
