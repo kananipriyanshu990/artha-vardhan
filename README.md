@@ -38,8 +38,6 @@ Use the hosted website link (Vercel): https://artha-vardhan.vercel.app/
    - **node -v**
    - **npm -v**
   
----
-
 2. **Open Terminal in the Project Folder**
 
 3. **Install Dependencies**
