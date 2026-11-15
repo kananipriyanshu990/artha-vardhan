@@ -7,7 +7,7 @@
 
 ## 🌟 Project Overview & Mission
 
-**Artha Vardhan** (*Sanskrit:* "Wealth that Grows") is an entirely passive, privacy-first, personal investment literacy and planning single-page application (SPA). Designed specifically for young Indians embarking on their financial journeys, it bridges the gap between financial jargon and practical action through interactive calculations, gamified literacy, life-stage roadmaps, and dual-mode AI advisory.
+**Artha Vardhan** (*Sanskrit:* "Wealth that Grows") is an entirely passive, privacy-first, personal investment literacy and planning application. Designed specifically for young Indians embarking on their financial journeys, it bridges the gap between financial jargon and practical action through interactive calculations, gamified literacy, life-stage roadmaps, and dual-mode AI advisory.
 
 ### Core Philosophy
 1. **Teach first, calculate second, plan third.**
@@ -21,10 +21,22 @@
 ## 🛠️ Tools & Technologies Used
 
 ### AI & Prompt Engineering Workflow
-- **Claude (Anthropic):** Utilized for structural blueprinting, end-to-end planning of educational module contents, formulation of SEBI-compliant financial logic, and system prompt generation.
+- **Claude (Sonnet 4.6):** Utilized for structural blueprinting, end-to-end planning of educational module contents, formulation of SEBI-compliant financial logic, and system prompt generation.
 - **Google AI Studio (Gemini 1.5 Flash):** Utilized as the code generation engine to produce all modular React components, custom mathematical hooks, and power the real-time AI Risk Profiler & Recommender in Advanced Mode.
 
-### Technical Stack
+## How to run it
+
+### Method 1: 
+Use the hosted website link (Vercel): https://artha-vardhan.vercel.app/
+
+### Method 2:
+Download the zip file of repository and extract it.
+inside the artha-vardhan folder, install dependencies using this command:
+npm install
+
+
+
+### Technical Sack
 - **Framework:** React 18 with Vite
 - **Styling & Design System:** Tailwind CSS (Custom Dark Navy `#0A0F2C` palette with zone-specific accent tokens)
 - **Interactive Visualizations:** Recharts (Area, Line, Bar, and Pie Charts)[cite: 2]
@@ -33,28 +45,6 @@
 - **State Management & Persistence:** React Context API + Custom `useLocalStorage` synchronization hooks[cite: 2]
 
 ---
-
-## 🎨 Global Design System
-
-The app runs on a dark, distraction-free navy foundation with dedicated neon and jewel accent colors for each functional zone[cite: 2]:
-
-- **Base Background:** `#0A0F2C` (Deep Navy)[cite: 2]
-- **Card Background:** `#111827`[cite: 2]
-- **Border / Divider:** `#1E2A3A`[cite: 2]
-- **Primary Text:** `#F0EDE4` (Off-white)[cite: 2]
-- **Secondary Text:** `#9CA3AF` (Muted grey)[cite: 2]
-
-### Zone Accent Color Palette
-| Zone | Title | Accent Hex |
-| :--- | :--- | :--- |
-| **Zone 1** | First Salary Onboarding | `#F5C518` (Gold) / `#FFAA00` (Warm Amber) |
-| **Zone 2** | Learn Zone | `#00D4FF` (Electric Cyan) |
-| **Zone 3** | Calculators | `#F5C518` (Gold) & `#00D4FF` (Cyan) |
-| **Zone 4** | Goal Planner | `#10B981` (Emerald Green) |
-| **Zone 5** | Portfolio Tracker | `#00D4FF` (Growth) / `#EF4444` (Loss) |
-| **Zone 6** | Compounding Wow Screen | `#F5C518` on `#0D2B1D` Gradient |
-| **Zone 7** | Investment Roadmap | `#7C3AED` (Soft Purple) |
-| **Zone 8** | AI Risk Profiler & Recommender | `#00D4FF` (Cyan) & `#FFAA00` (Amber Disclaimer) |
 
 ---
 
