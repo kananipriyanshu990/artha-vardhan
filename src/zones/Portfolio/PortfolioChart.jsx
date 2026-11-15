@@ -35,7 +35,7 @@ export default function PortfolioChart({ portfolio }) {
             ))}
           </Pie>
           <Tooltip
-            contentStyle={{ backgroundColor: "#111827", borderColor: "#1E2A3A", borderRadius: "8px" }}
+            contentStyle={{ backgroundColor: "#ffc400", borderColor: "#37ff00", borderRadius: "8px" }}
             formatter={(val) => [`₹${Number(val).toLocaleString("en-IN")}`, "Allocation"]}
           />
         </PieChart>
