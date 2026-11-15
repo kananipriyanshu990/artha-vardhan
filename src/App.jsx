@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { AppProvider, useApp } from "./context/AppContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 // Lazy-loaded functional zones for optimized bundle performance as required in Section 16.8
 const Onboarding = lazy(() => import("./zones/Onboarding/Onboarding"));
@@ -49,6 +50,7 @@ export default function App() {
       <div className="bg-[#0A0F2C] min-h-screen text-[#F0EDE4] selection:bg-[#F5C518] selection:text-[#0A0F2C]">
         <Navbar />
         <MainContent />
+        <Analytics />
       </div>
     </AppProvider>
   );
