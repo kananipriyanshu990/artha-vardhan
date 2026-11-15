@@ -11,7 +11,7 @@ const GoalPlanner = lazy(() => import("./zones/GoalPlanner/GoalPlanner"));
 const Portfolio = lazy(() => import("./zones/Portfolio/Portfolio"));
 const CompoundingWow = lazy(() => import("./zones/CompoundingWow/CompoundingWow"));
 const InvestmentRoadmap = lazy(() => import("./zones/Roadmap/InvestmentRoadmap"));
-const AIRecommender = lazy(() => import("./zones/AIRecommender/AIRecommender"));
+const AIRecommender = lazy(() => import("./zones/Recommender/Recommender"));
 
 function MainContent() {
   const { activeZone, onboardingDone } = useApp();
