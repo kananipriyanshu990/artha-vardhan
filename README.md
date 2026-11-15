@@ -32,21 +32,23 @@ Use the hosted website link (Vercel): https://artha-vardhan.vercel.app/
 ---
 
 ### Method 2:
-1. **Ensure Node.js is Installed**
+1. Download the zip file of repository, extract it and navigate inside the primary folder.
+   
+2. **Ensure Node.js is Installed**
    - Download the LTS version from https://nodejs.org/ and complete the installer setup.
    - Open a fresh terminal (Command Prompt or PowerShell) and verify the installation by typing:
    - **node -v**
    - **npm -v**
   
-2. **Open Terminal in the Project Folder**
+3. **Open Terminal in the Project Folder**
 
-3. **Install Dependencies**
+4. **Install Dependencies**
    - **npm install**
   
-4. **Start the Development Server**
+5. **Start the Development Server**
    - **npm run dev**
   
-5. **Open the App in Your Browser**
+6. **Open the App in Your Browser**
    - Hold Ctrl and click the link
 
 
