@@ -32,7 +32,7 @@ Use the hosted website link (Vercel): https://artha-vardhan.vercel.app/
 ---
 
 ### Method 2:
-1. Download the zip file of repository, extract it and navigate inside the primary folder.
+1. **Download the zip file of repository, extract it and navigate inside the primary folder.**
    
 2. **Ensure Node.js is Installed**
    - Download the LTS version from https://nodejs.org/ and complete the installer setup.
