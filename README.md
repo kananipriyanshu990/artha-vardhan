@@ -66,14 +66,14 @@ Use the hosted website link (Vercel): https://artha-vardhan.vercel.app/
 
 ## 🧭 Comprehensive Breakdown of All 8 Zones & Tabs
 
-### Zone 1: First Salary Onboarding (`#F5C518` / `#FFAA00`)
+### Zone 1: First Salary Onboarding
 Triggered automatically on first visit and skippable after Step 1. Guides a fresher through understanding their paycheck:
 - **Step 1 — Welcome:** Inspirational introduction to active money management.
 - **Step 2 — Income Input:** Safe, private numerical input for monthly salary or pocket money.
 - **Step 3 — The Split (50/30/20 Rule):** Visual bar breakdown dividing income into 50% Needs (Rent, Food, Bills), 30% Wants (Entertainment, Dining), and 20% Savings & Investments.
 - **Step 4 — The Nudge:** Calculates future value of their 20% savings compounded at 12% over 10 years, accompanied by an interactive area chart showing invested cash versus compound gains.
 
-### Zone 2: Learn Zone (`#00D4FF`)
+### Zone 2: Learn Zone
 The central financial literacy repository structured into three sub-tabs:
 1. **Learning Modules:** 8 comprehensive, jargon-free guides covering:
    - *Why Invest At All?* (Inflation math, FD vs. Equity Index comparison)
@@ -88,7 +88,7 @@ The central financial literacy repository structured into three sub-tabs:
 3. **Jargon Dictionary:** Searchable glossary of 28 core terms (AUM, CAGR, Corpus, ELSS, NAV, XIRR, etc.) featuring instant gold match highlights.
 4. **Modular Quizzes:** 5 MCQs per module (40 total) with instant color-coded feedback, scoring, and unlockable *"Artha Expert"* achievement badges.
 
-### Zone 3: High-Precision Investment Calculators (`#F5C518` & `#00D4FF`)
+### Zone 3: High-Precision Investment Calculators 
 Mathematical engines featuring real-time interactive Recharts visualizations:
 - **SIP Calculator:** Calculates future wealth using the exact monthly formula `M = P × ({[1 + r]^n – 1} / r) × (1 + r)` with slider controls.
 - **Lumpsum Calculator:** Projects one-time compounding using `A = P × (1 + r/100)^t`.
@@ -97,14 +97,14 @@ Mathematical engines featuring real-time interactive Recharts visualizations:
 - **ELSS Tax Saver:** Compares Old Regime tax brackets (FY 2025–26) with and without Section 80C deductions, with informational guidance regarding the New Tax Regime.
 - **What-If Simulator:** Compares baseline SIPs against dynamic life events: step-up increases, pause periods, rate shifts, and lump sum injections.
 
-### Zone 4: Reverse Goal Planner (`#10B981`)
+### Zone 4: Reverse Goal Planner 
 Allows users to plan up to 10 financial milestones (e.g., Higher Studies, First Car, Emergency Fund, House Downpayment):
 - **Auto-assigned Emojis:** Keyword detection tags goals automatically (✈️ Travel, 🎓 Education, 🛡️ Emergency, 🏠 Home).
 - **Reverse Calculation:** Solves for required monthly SIP based on target date, inflation, and existing savings.
 - **Full CRUD Capabilities:** Add, edit, update, and delete goals with persistent `localStorage` synchronization.
 - **Empty State:** Thoughtful call to action when no goals have been created yet.
 
-### Zone 5: Passive Portfolio Tracker (`#00D4FF` / `#EF4444`)
+### Zone 5: Passive Portfolio Tracker 
 A zero-API, completely private manual ledger:
 - **Asset Management:** Log equity funds, index funds, debt, ELSS, PPF, and FDs with purchase date, invested principal, and current valuation.
 - **Full CRUD Support:** Dedicated edit modal to update existing investments without creating duplicates.
@@ -112,12 +112,12 @@ A zero-API, completely private manual ledger:
 - **Future Projection:** Multi-year compounding projections (1, 3, 5, 10 years) at target returns.
 - **Text Export:** Generates and downloads a clean, formatted `.txt` portfolio summary report.
 
-### Zone 6: Compounding "Wow" Screen (`#F5C518` on `#0D2B1D`)
+### Zone 6: Compounding "Wow" Screen 
 A dramatic, shareable visualization demonstrating the mathematical paradox of early compounding:
 - **The Classic Comparison:** Person A (invests ₹500/mo from age 18 to 25 only = ₹42,000 total) vs. Person B (invests ₹500/mo from age 25 to 60 = ₹2,10,000 total). Demonstrates how Person A accumulates nearly identical wealth at age 60 while investing 5x less capital.
 - **Interactive "Cost of Waiting" Counter:** Users enter their age and monthly SIP to see the exact monetary loss incurred by postponing investing by just 5 years.
 
-### Zone 7: Investment Roadmap (`#7C3AED`)
+### Zone 7: Investment Roadmap 
 A vertical timeline displaying a 6-stage lifecycle path from Age 18 to 50+:
 1. **Stage 1 (18–22):** *Foundation* (Emergency fund, KYC, ₹500 index SIPs)
 2. **Stage 2 (22–25):** *Acceleration* (Step-up SIP, 80C ELSS, avoiding lifestyle inflation)
@@ -127,7 +127,7 @@ A vertical timeline displaying a 6-stage lifecycle path from Age 18 to 50+:
 6. **Stage 6 (50+):** *Preservation* (Capital defense, SWP retirement withdrawals)
 - **Interactive Pin:** Entering an age dynamically highlights the user's active life stage with a gold *"YOU ARE HERE"* marker.
 
-### Zone 8: AI Risk Profiler & Recommender (`#00D4FF` & `#FFAA00`)
+### Zone 8: AI Risk Profiler & Recommender
 Features a dual-mode toggle catering to both offline environments and live AI generation:
 - **10-Question Behavioral Assessment:** Scores risk tolerance from 10 to 40 across Conservative, Moderate, Moderately Aggressive, and Aggressive tiers.
 - **Mode 1 — Simple Mode (Default / 100% Offline):** Evaluates score instantly without internet or API keys using four pre-written expert templates.
