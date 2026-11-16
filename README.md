@@ -131,7 +131,7 @@ A vertical timeline displaying a 6-stage lifecycle path from Age 18 to 50+[cite:
 Features a dual-mode toggle catering to both offline environments and live AI generation[cite: 2]:
 - **10-Question Behavioral Assessment:** Scores risk tolerance from 10 to 40 across Conservative, Moderate, Moderately Aggressive, and Aggressive tiers[cite: 2].
 - **Mode 1 — Simple Mode (Default / 100% Offline):** Evaluates score instantly without internet or API keys using four pre-written expert templates[cite: 2].
-- **Mode 2 — Advanced Mode (Live Gemini 1.5 Flash API):** Prompts for a Google AI Studio API key via a password-type input[cite: 2]. The key is held strictly in local React state, never stored in `localStorage` or `sessionStorage`, and is wiped upon tab switch or component unmount[cite: 2]. The Gemini API analyzes answers to return personality analysis, category recommendations, and customized warnings[cite: 2].
+- **Mode 2 — Advanced Mode (Live Gemini API):** Prompts for a Google AI Studio API key via a password-type input[cite: 2]. The key is held strictly in local React state, never stored in `localStorage` or `sessionStorage`, and is wiped upon tab switch or component unmount[cite: 2]. The Gemini API analyzes answers to return personality analysis, category recommendations, and customized warnings[cite: 2].
 - **Mandatory Amber Disclaimer:** Persistent SEBI-compliant educational disclosures displayed before and after quiz completion[cite: 2].
 
 ---
