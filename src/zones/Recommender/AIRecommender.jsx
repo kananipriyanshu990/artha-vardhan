@@ -16,15 +16,22 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-const GEMINI_ENDPOINT =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
+
+const PREFERRED_MODELS = [
+  "models/gemini-2.5-flash",
+  "models/gemini-2.0-flash",
+  "models/gemini-1.5-flash",
+  "models/gemini-1.5-flash-latest",
+];
 
 export default function AIRecommender() {
   const { setActiveZone } = useApp();
   const [mode, setMode] = useState("simple");
 
-  // Gemini API key state (strictly in-memory, cleared on mode switch and unmount)
+  // Gemini API key & resolved model state (strictly in-memory, cleared on mode switch and unmount)
   const [geminiKey, setGeminiKey] = useState("");
+  const [activeModel, setActiveModel] = useState("models/gemini-2.5-flash");
   const [tempKeyInput, setTempKeyInput] = useState("");
   const [isKeyConfirmed, setIsKeyConfirmed] = useState(false);
   const [validatingKey, setValidatingKey] = useState(false);
@@ -67,47 +74,59 @@ export default function AIRecommender() {
     }
   };
 
-  // Validate Gemini API key against Google AI Studio before allowing quiz start
+  // Validate Gemini API key via /v1beta/models and auto-detect supported Flash model
   const handleConfirmKey = async (e) => {
     e.preventDefault();
-    const trimmedKey = tempKeyInput.trim();
+    const cleanedKey = tempKeyInput.replace(/\s+/g, "");
     setKeyError(null);
 
-    if (!trimmedKey) {
+    if (!cleanedKey) {
       setKeyError("Please enter your Gemini API key.");
-      return;
-    }
-
-    if (!trimmedKey.startsWith("AIza") || trimmedKey.length < 30) {
-      setKeyError(
-        "Invalid key format. Google AI Studio keys start with 'AIza' and are ~39 characters long."
-      );
       return;
     }
 
     setValidatingKey(true);
     try {
       const response = await fetch(
-        `${GEMINI_ENDPOINT}?key=${encodeURIComponent(trimmedKey)}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: "Reply with OK" }] }],
-            generationConfig: { maxOutputTokens: 2 },
-          }),
-        }
+        `${GEMINI_BASE_URL}/models?key=${encodeURIComponent(cleanedKey)}`,
+        { method: "GET" }
       );
 
+      const data = await response.json().catch(() => ({}));
+
       if (!response.ok) {
-        const errorJson = await response.json().catch(() => ({}));
         const msg =
-          errorJson?.error?.message ||
-          `Key verification failed (HTTP ${response.status}).`;
+          data?.error?.message ||
+          `Google AI Studio rejected the key (HTTP ${response.status}).`;
         throw new Error(msg);
       }
 
-      setGeminiKey(trimmedKey);
+      // Find all models enabled for this key that support generateContent
+      const availableModels = (data.models || []).filter(
+        (m) =>
+          Array.isArray(m.supportedGenerationMethods) &&
+          m.supportedGenerationMethods.includes("generateContent")
+      );
+
+      if (availableModels.length === 0) {
+        throw new Error(
+          "This API key is valid, but no text-generation Gemini models are enabled for its Google Cloud project."
+        );
+      }
+
+      // Pick the best available Flash model, or fall back to any available Gemini model
+      const matchedPreferred = PREFERRED_MODELS.find((pref) =>
+        availableModels.some((m) => m.name === pref)
+      );
+      const fallbackGemini = availableModels.find((m) =>
+        m.name.includes("gemini")
+      );
+
+      const chosenModel =
+        matchedPreferred || fallbackGemini?.name || availableModels[0].name;
+
+      setActiveModel(chosenModel);
+      setGeminiKey(cleanedKey);
       setIsKeyConfirmed(true);
       setApiError(null);
     } catch (err) {
@@ -115,7 +134,7 @@ export default function AIRecommender() {
       setGeminiKey("");
       setKeyError(
         err.message ||
-          "Could not verify API key. Please check your key and internet connection."
+          "Network or verification error. Check your internet connection and API key."
       );
     } finally {
       setValidatingKey(false);
@@ -158,7 +177,8 @@ export default function AIRecommender() {
           maxScore,
           template.category,
           nextAnswers,
-          geminiKey
+          geminiKey,
+          activeModel
         );
       }
     }
@@ -169,7 +189,8 @@ export default function AIRecommender() {
     maxScore,
     category,
     quizAnswers,
-    keyToUse
+    keyToUse,
+    modelToUse
   ) => {
     setLoadingAI(true);
     setApiError(null);
@@ -193,8 +214,14 @@ Risk category: ${category}
 User's answers: ${JSON.stringify(quizAnswers)}`;
 
     try {
+      const normalizedModel = modelToUse.startsWith("models/")
+        ? modelToUse
+        : `models/${modelToUse}`;
+
       const response = await fetch(
-        `${GEMINI_ENDPOINT}?key=${encodeURIComponent(keyToUse)}`,
+        `${GEMINI_BASE_URL}/${normalizedModel}:generateContent?key=${encodeURIComponent(
+          keyToUse
+        )}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -204,15 +231,15 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
         }
       );
 
+      const data = await response.json().catch(() => ({}));
+
       if (!response.ok) {
-        const errorJson = await response.json().catch(() => ({}));
         throw new Error(
-          errorJson?.error?.message ||
+          data?.error?.message ||
             `API Error: Status ${response.status} (${response.statusText})`
         );
       }
 
-      const data = await response.json();
       const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
       if (!text) {
         throw new Error("Received an empty response from Gemini API.");
@@ -239,7 +266,7 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
 
   return (
     <div className="max-w-7xl mx-auto pt-24 pb-16 px-4 sm:px-6 lg:px-8 space-y-8 animate-fadeIn">
-      {/* Zone Header */}
+      {/* Zone Header + Dual Mode Toggle */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-[#1E2A3A] pb-6">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#00D4FF] mb-1">
@@ -254,30 +281,41 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
           </p>
         </div>
 
-        {/* Dual Mode Toggle */}
-        <div className="flex items-center bg-[#111827] p-1 rounded-xl border border-[#1E2A3A]">
-          <button
-            type="button"
-            onClick={() => handleModeChange("simple")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-              mode === "simple"
-                ? "bg-[#00D4FF] text-[#0A0F2C] shadow-lg shadow-[#00D4FF]/20"
-                : "text-gray-400 hover:text-white"
-            }`}
+        {/* Visual Dual Mode Toggle */}
+        <div className="flex flex-col items-start md:items-end gap-1.5">
+          <div
+            role="group"
+            aria-label="Recommender Mode Toggle"
+            className="flex items-center bg-[#111827] p-1 rounded-xl border border-[#1E2A3A]"
           >
-            <Shield className="w-3.5 h-3.5" /> Simple Mode
-          </button>
-          <button
-            type="button"
-            onClick={() => handleModeChange("advanced")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-              mode === "advanced"
-                ? "bg-[#00D4FF] text-[#0A0F2C] shadow-lg shadow-[#00D4FF]/20"
-                : "text-gray-400 hover:text-white"
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" /> AI Mode
-          </button>
+            <button
+              type="button"
+              onClick={() => handleModeChange("simple")}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                mode === "simple"
+                  ? "bg-[#00D4FF] text-[#0A0F2C] shadow-lg shadow-[#00D4FF]/20"
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <Shield className="w-3.5 h-3.5" /> Simple Mode
+            </button>
+            <button
+              type="button"
+              onClick={() => handleModeChange("advanced")}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                mode === "advanced"
+                  ? "bg-[#00D4FF] text-[#0A0F2C] shadow-lg shadow-[#00D4FF]/20"
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" /> Advanced Mode
+            </button>
+          </div>
+          <span className="text-[11px] text-gray-400">
+            {mode === "simple"
+              ? "100% Offline • No API key needed"
+              : "Live Gemini AI • Requires Google AI Studio key"}
+          </span>
         </div>
       </div>
 
@@ -295,8 +333,9 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
           </div>
           <p className="text-xs text-gray-300 leading-relaxed">
             Enter a valid Google AI Studio API key to unlock personalized AI
-            analysis. Your key is verified once, never stored in browser
-            storage, and wiped automatically when you leave this tab.
+            analysis. Your key is verified directly with Google AI Studio, never
+            stored in browser storage, and wiped automatically when you leave
+            this tab.
           </p>
 
           <form onSubmit={handleConfirmKey} className="space-y-4 pt-2">
@@ -308,7 +347,7 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
                 type="password"
                 required
                 disabled={validatingKey}
-                placeholder="AIzaSy..."
+                placeholder="Paste your Gemini API key..."
                 value={tempKeyInput}
                 onChange={(e) => {
                   setTempKeyInput(e.target.value);
@@ -321,7 +360,7 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
             {keyError && (
               <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/40 flex items-start gap-2 text-xs text-red-300">
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                <span>{keyError}</span>
+                <span className="break-words">{keyError}</span>
               </div>
             )}
 
@@ -347,7 +386,8 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
           <Card className="max-w-2xl mx-auto p-8 space-y-6 text-center">
             {mode === "advanced" && isKeyConfirmed && (
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Gemini API Key Verified
+                <CheckCircle2 className="w-3.5 h-3.5" /> Key Verified (
+                {activeModel.replace("models/", "")})
               </div>
             )}
 
@@ -398,10 +438,11 @@ User's answers: ${JSON.stringify(quizAnswers)}`;
               resultProfile.maxScore,
               resultProfile.category,
               answers,
-              geminiKey
+              geminiKey,
+              activeModel
             )
           }
-          onFallbackSimple={() => setMode("simple")}
+          onFallbackSimple={() => handleModeChange("simple")}
           onRetake={handleRetake}
           onGoToGoals={() => setActiveZone("goals")}
         />
